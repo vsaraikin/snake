@@ -8,40 +8,18 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies (Ubuntu)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            cmake ninja-build clang-format \
-            g++-14 \
-            libgl1-mesa-dev libglu1-mesa-dev \
-            libudev-dev libx11-dev libxi-dev libxrandr-dev libxcursor-dev \
-            libfreetype-dev libopenal-dev libflac-dev libvorbis-dev
-
-      - name: Install dependencies (macOS)
-        if: runner.os == 'macOS'
+      - name: Install dependencies
         run: |
           brew install cmake ninja llvm
           echo "$(brew --prefix llvm)/bin" >> "$GITHUB_PATH"
 
       - name: Configure
-        run: |
-          CMAKE_EXTRA=""
-          if [ "$RUNNER_OS" = "Linux" ]; then
-            CMAKE_EXTRA="-DCMAKE_CXX_COMPILER=g++-14"
-          fi
-          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON $CMAKE_EXTRA
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
       - name: Build
         run: cmake --build build
@@ -53,6 +31,4 @@ jobs:
         run: clang-format --dry-run --Werror $(find src tests -name '*.cpp' -o -name '*.hpp')
 
       - name: Lint
-        if: runner.os == 'macOS'
-        run: |
-          clang-tidy -p build --extra-arg=-isysroot$(xcrun --show-sdk-path) $(find src -name '*.cpp')
+        run: clang-tidy -p build --extra-arg=-isysroot$(xcrun --show-sdk-path) $(find src -name '*.cpp')
