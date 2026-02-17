@@ -47,5 +47,9 @@ jobs:
         run: clang-format --dry-run --Werror $(find src tests -name '*.cpp' -o -name '*.hpp')
 
       - name: Lint
-        continue-on-error: true
-        run: clang-tidy -p build $(find src -name '*.cpp')
+        run: |
+          EXTRA_ARGS=""
+          if [ "$(uname)" = "Darwin" ]; then
+            EXTRA_ARGS="--extra-arg=-isysroot$(xcrun --show-sdk-path)"
+          fi
+          clang-tidy -p build $EXTRA_ARGS $(find src -name '*.cpp')

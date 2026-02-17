@@ -64,6 +64,12 @@ add_executable(snake_tests
 target_compile_features(snake_tests PRIVATE cxx_std_23)
 target_link_libraries(snake_tests PRIVATE Catch2::Catch2WithMain SFML::Graphics SFML::System)
 
+option(COVERAGE "Enable code coverage" OFF)
+if(COVERAGE)
+    target_compile_options(snake_tests PRIVATE --coverage)
+    target_link_options(snake_tests PRIVATE --coverage)
+endif()
+
 include(CTest)
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(Catch)
