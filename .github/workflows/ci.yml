@@ -24,6 +24,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             cmake ninja-build clang-format clang-tidy \
+            g++-14 \
             libgl1-mesa-dev libglu1-mesa-dev \
             libudev-dev libx11-dev libxi-dev libxrandr-dev libxcursor-dev \
             libfreetype-dev libopenal-dev libflac-dev libvorbis-dev
@@ -35,7 +36,12 @@ jobs:
           echo "$(brew --prefix llvm)/bin" >> "$GITHUB_PATH"
 
       - name: Configure
-        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        run: |
+          CMAKE_EXTRA=""
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            CMAKE_EXTRA="-DCMAKE_CXX_COMPILER=g++-14"
+          fi
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON $CMAKE_EXTRA
 
       - name: Build
         run: cmake --build build
