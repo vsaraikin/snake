@@ -1,0 +1,59 @@
+BasedOnStyle: LLVM
+Standard: Latest
+ColumnLimit: 100
+
+IndentWidth: 4
+ContinuationIndentWidth: 4
+AccessModifierOffset: -4
+ConstructorInitializerIndentWidth: 4
+IndentCaseLabels: false
+NamespaceIndentation: None
+
+BreakBeforeBraces: Attach
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+
+BinPackParameters: true
+BinPackArguments: true
+PackConstructorInitializers: BinPack
+
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:    '^".*'
+    Priority: 1
+  - Regex:    '^<SFML/.*'
+    Priority: 2
+  - Regex:    '^<catch2/.*'
+    Priority: 3
+  - Regex:    '^<.*'
+    Priority: 4
+
+SortIncludes: CaseSensitive
+
+SpaceAfterCStyleCast: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeParens: ControlStatements
+SpacesInAngles: Never
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeCpp11BracedList: false
+
+AlwaysBreakTemplateDeclarations: Yes
+BreakConstructorInitializers: BeforeColon
+
+EmptyLineBeforeAccessModifier: Always
+EmptyLineAfterAccessModifier: Never
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+
+FixNamespaceComments: true
+CompactNamespaces: false
+
+InsertBraces: false
+InsertNewlineAtEOF: true

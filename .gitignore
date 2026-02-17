@@ -1,0 +1,13 @@
+build/
+.deps/
+.cache/
+.DS_Store
+*.swp
+*.swo
+*~
+compile_commands.json
+.vscode/
+.idea/
+settings.txt
+highscore.txt
+.claude
