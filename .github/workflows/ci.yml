@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            cmake ninja-build clang-format clang-tidy \
+            cmake ninja-build clang-format \
             g++-14 \
             libgl1-mesa-dev libglu1-mesa-dev \
             libudev-dev libx11-dev libxi-dev libxrandr-dev libxcursor-dev \
@@ -53,9 +53,6 @@ jobs:
         run: clang-format --dry-run --Werror $(find src tests -name '*.cpp' -o -name '*.hpp')
 
       - name: Lint
+        if: runner.os == 'macOS'
         run: |
-          EXTRA_ARGS=""
-          if [ "$(uname)" = "Darwin" ]; then
-            EXTRA_ARGS="--extra-arg=-isysroot$(xcrun --show-sdk-path)"
-          fi
-          clang-tidy -p build $EXTRA_ARGS $(find src -name '*.cpp')
+          clang-tidy -p build --extra-arg=-isysroot$(xcrun --show-sdk-path) $(find src -name '*.cpp')
